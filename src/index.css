@@ -1,0 +1,29 @@
+.layout {
+  display: flex;
+  min-height: 90vh;
+
+  > * {
+    border: 1px solid #ccc;
+  }
+  > nav {
+    flex-basis: 25vw;
+  }
+
+  > main {
+    flex-grow: 1;
+  }
+}
+
+
+nav ul li {
+  margin: 10px 0;
+  text-transform: uppercase;
+
+  > a {
+    text-decoration: none;
+  }
+  > a:hover {
+    opacity: 0.7;
+  }
+
+}
