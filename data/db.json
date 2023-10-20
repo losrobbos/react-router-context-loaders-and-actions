@@ -1,0 +1,6 @@
+{
+  "todos": [
+    { "id": "t1", "title": "Do some routing" },
+    { "id": "t2", "title": "Add that todo page" }
+  ]
+}
