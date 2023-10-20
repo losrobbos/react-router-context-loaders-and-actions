@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
-import { useDataStore } from "../store/store";
+import { Link, useLoaderData } from "react-router-dom";
 
 export const TodosAll = () => {
-  const todos = useDataStore((state) => state.todos);
+  const todos = useLoaderData()
 
   const todosList = todos.map((todo) => (
     <div key={todo.id}>

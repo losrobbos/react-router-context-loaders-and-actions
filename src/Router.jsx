@@ -1,6 +1,6 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
-import { HomePage } from "./components/HomePage";
 import { Layout } from "./Layout";
+import { HomePage } from "./components/HomePage";
 import { TodosAll } from "./components/TodosAll";
 import { TodosAdd } from "./components/TodoAdd";
 import { TodosEdit } from "./components/TodoEdit";
@@ -19,6 +19,10 @@ export const router = createBrowserRouter([
       {
         path: "todos",
         element: <TodosAll />,
+        loader: async () => {
+          console.log("[TODOS all] Loader")
+          return fetch("http://localhost:5000/todos");
+        }
       },
       {
         path: "todos/add",
@@ -28,25 +32,43 @@ export const router = createBrowserRouter([
           const formData = await request.formData()
           // extract data from formdata collection into an object
           const todoData = Object.fromEntries(formData)
-          console.log("[ACTION] Data received:", todoData)
+          console.log("[TODO Add ACTION] Data received:", todoData)
 
-          // TODO: create entry at API
+          // create entry at API
+          await fetch(`http://localhost:5000/todos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(todoData)
+          });
 
           // redirect to todo list and wait there for auto refresh of all todos...
-          // TODO: pass the new data along... (in context??)
           return redirect("/todos")
         }
       },
       {
         path: "todos/:todoId/edit",
         element: <TodosEdit />,
+        loader: async ({ params }) => {
+          console.log("[TODO EDIT] loader", params);
+          // fetch TODO item from API
+          // pass todo item over to component
+          return fetch(`http://localhost:5000/todos/${params.todoId}`);
+          // return { id: params.todoId }
+        },
         action: async ({ request, params }) => {
           const formData = await request.formData()
           // extract form data into object
           const todoUpdated = Object.fromEntries(formData)
-          Object.assign(todoUpdated, { id: params.todoId })
+          // Object.assign(todoUpdated, { id: params.todoId })
+          console.log("[TODO EDIT ACTION] data received", todoUpdated);
 
-          console.log("[EDIT] FormData", todoUpdated)
+          // TODO: update item at API
+          await fetch(`http://localhost:5000/todos/${params.todoId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(todoUpdated)
+          });
+
           return redirect("/todos")
         }
       },

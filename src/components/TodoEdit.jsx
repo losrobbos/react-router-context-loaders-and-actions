@@ -1,10 +1,7 @@
-import { Form, useParams } from "react-router-dom";
-import { useDataStore } from "../store/store";
+import { Form, useLoaderData } from "react-router-dom";
 
 export const TodosEdit = () => {
-  const { todoId } = useParams();
-  const getTodo = useDataStore((state) => state.getTodo);
-  const todo = getTodo(todoId);
+  const todo = useLoaderData()
 
   return (
     <>

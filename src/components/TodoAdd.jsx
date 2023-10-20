@@ -10,7 +10,7 @@ export const TodosAdd = () => {
             type="text"
             name="title"
             placeholder="Title..."
-            defaultValue="Wash"
+            defaultValue="Wash the dishes"
           />
         </div>
         <div>
