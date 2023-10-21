@@ -1,8 +1,10 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { RouterProvider } from 'react-router-dom';
-import { router } from './Router';
+import { DataProvider } from './store/DataProvider';
+import { Router } from './Router';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />,
+  <DataProvider>
+    <Router />
+  </DataProvider>
 )
