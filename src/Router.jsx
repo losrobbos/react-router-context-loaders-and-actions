@@ -10,6 +10,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <div style={{ color: "red" }}>Autsch! General ERROR!</div>,
     children: [
       {
         index: true,
@@ -20,30 +21,33 @@ export const router = createBrowserRouter([
         path: "todos",
         element: <TodosAll />,
         loader: async () => {
-          console.log("[TODOS all] Loader")
+          console.log("[TODOS all] Loader");
           return fetch("http://localhost:5000/todos");
-        }
+        },
+        errorElement: (
+          <div style={{ color: "red" }}>Autsch! API nicht erreichbar!</div>
+        ),
       },
       {
         path: "todos/add",
         element: <TodosAdd />,
         action: async ({ request }) => {
           // wait for sended formdata
-          const formData = await request.formData()
+          const formData = await request.formData();
           // extract data from formdata collection into an object
-          const todoData = Object.fromEntries(formData)
-          console.log("[TODO Add ACTION] Data received:", todoData)
+          const todoData = Object.fromEntries(formData);
+          console.log("[TODO Add ACTION] Data received:", todoData);
 
           // create entry at API
           await fetch(`http://localhost:5000/todos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(todoData)
+            body: JSON.stringify(todoData),
           });
 
           // redirect to todo list and wait there for auto refresh of all todos...
-          return redirect("/todos")
-        }
+          return redirect("/todos");
+        },
       },
       {
         path: "todos/:todoId/edit",
@@ -56,9 +60,9 @@ export const router = createBrowserRouter([
           // return { id: params.todoId }
         },
         action: async ({ request, params }) => {
-          const formData = await request.formData()
+          const formData = await request.formData();
           // extract form data into object
-          const todoUpdated = Object.fromEntries(formData)
+          const todoUpdated = Object.fromEntries(formData);
           // Object.assign(todoUpdated, { id: params.todoId })
           console.log("[TODO EDIT ACTION] data received", todoUpdated);
 
@@ -66,11 +70,11 @@ export const router = createBrowserRouter([
           await fetch(`http://localhost:5000/todos/${params.todoId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(todoUpdated)
+            body: JSON.stringify(todoUpdated),
           });
 
-          return redirect("/todos")
-        }
+          return redirect("/todos");
+        },
       },
     ],
   },
