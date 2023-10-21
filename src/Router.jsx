@@ -27,7 +27,13 @@ export const router = createBrowserRouter([
         element: <TodosAll />,
         loader: async () => {
           console.log("[TODOS all] Loader");
-          return defer(fetch("http://localhost:5000/todos"));
+          // render blocking data loading (only once data is READY, we will pass it to the component to render) 
+          // return fetch("http://localhost:5000/todos");
+
+          // NON render blocking data loading using defer
+          return defer({
+            todos: fetch("http://localhost:5000/todos").then(resp => resp.json())
+          });
         },
         errorElement: <ErrorPage />,
       },
@@ -51,6 +57,15 @@ export const router = createBrowserRouter([
           // redirect to todo list and wait there for auto refresh of all todos...
           return redirect("/todos");
         },
+      },
+      // delete route
+      {
+        path: "todos/:todoId/delete",
+        loader: async({ params }) => {
+          // TODO: delete todo from API and return to list
+          console.log(params)
+          return redirect("/todos")
+        }
       },
       {
         path: "todos/:todoId/edit",
