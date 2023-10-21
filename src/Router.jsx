@@ -1,9 +1,14 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import {
+  createBrowserRouter,
+  defer,
+  redirect,
+} from "react-router-dom";
 import { Layout } from "./Layout";
 import { HomePage } from "./components/HomePage";
 import { TodosAll } from "./components/TodosAll";
 import { TodosAdd } from "./components/TodoAdd";
 import { TodosEdit } from "./components/TodoEdit";
+import { ErrorPage } from "./components/ErrorPage";
 
 export const router = createBrowserRouter([
   // LAYOUT
@@ -22,11 +27,9 @@ export const router = createBrowserRouter([
         element: <TodosAll />,
         loader: async () => {
           console.log("[TODOS all] Loader");
-          return fetch("http://localhost:5000/todos");
+          return defer(fetch("http://localhost:5000/todos"));
         },
-        errorElement: (
-          <div style={{ color: "red" }}>Autsch! API nicht erreichbar!</div>
-        ),
+        errorElement: <ErrorPage />,
       },
       {
         path: "todos/add",
