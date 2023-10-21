@@ -13,14 +13,17 @@ The demo shows all above concepts using
 ## How to run
 
 First things first 
+
 `npm install``
 
 On main branch:
+
 `npm run dev`
 
 On api-loading-async branch
+
 ```
-npm run api (to start json server / API)
-npm run dev (to start frontend / open separate tab)
+npm run api // to start json server / API
+npm run dev // to start frontend / open separate tab
 ```
 
